@@ -1,9 +1,9 @@
 <?php
 
-    $db_hostname    ="localhost";
-    $db_username    ="simrs_khanza";
-    $db_password    ="2S8rbRpuMnG9o84w";
-    $db_name        ="simrs_khanza";
+	$db_hostname    ="localhost";
+	$db_username    ="simrs_khanza";
+	$db_password    ="2S8rbRpuMnG9o84w";
+	$db_name        ="simrs_khanza";
 
     function host(){
         global $db_hostname;
@@ -11,13 +11,13 @@
     }
     
 
-     function  bukakoneksi(){
+     function  bukakoneksi()
+	 {
      	global $db_hostname, $db_username, $db_password, $db_name;
-        $konektor=mysqli_connect($db_hostname,$db_username,$db_password)
+        $konektor=@mysql_connect($db_hostname,$db_username,$db_password)
         or die ("<font color=red><h3>Not Connected ..!!</h3></font>");
-        $db_select=mysqli_select_db($konektor, $db_name)
-        or die("<font color=red><h3>Cannot chose database..!!</h3></font>". mysqli_error());
-	return $konektor;
+        $db_select=mysql_select_db($db_name)
+        or die("<font color=red><h3>Cannot chose database..!!</h3></font>");
      }
      
      $sqlinjectionchars = array("=","-","'","\"","+"); //tambah sendiri
@@ -37,7 +37,7 @@
         $args = array_slice(func_get_args(),1);
         $args = array_map('mysql_safe_string',$args);
         $query = vsprintf($format,$args);
-        return mysqli_query($query);
+        return mysql_query($query);
     }
     
     function validUrl($url){
@@ -152,65 +152,43 @@
      function tutupkoneksi()
 	 {
        global  $konektor;
-       mysqli_close($konektor);
+       mysql_close($konektor);
      }
 
-     function bukaquery($sql){    
-        $konektor=bukakoneksi();
-        $result=mysqli_query($konektor, $sql)
-        or die (mysqli_error($konektor)."<br/><font color=red><b>hmmmmmmm.....??????????</b>");
-        mysqli_close($konektor);
-        return $result;
-     }
-     
-     function bukaquery2($sql){
-        bukakoneksi();
-        $result=mysqli_query(bukakoneksi(),$sql);
-        mysqli_close(bukakoneksi());
+     function bukaquery($sql)
+	 {
+       bukakoneksi();
+       $result=mysql_query($sql)
+        or die (mysql_error()."<br/><font color=red><b>hmmmmmmm.....??????????</b>");
         return $result;
      }
 
-     function bukainput($sql){
-        bukakoneksi();
-        $result=mysqli_query(bukakoneksi(),$sql)
-        or die(/*mysqli_error().*/"<br/><font color=red><b>Gagal</b> menjalankan perintah query !");
-        mysqli_close(bukakoneksi());
+     function bukainput($sql)
+	 {
+       bukakoneksi();
+       $result=mysql_query($sql)
+        or die(mysql_error()."<br/><font color=red><b>Gagal</b>, Ada data dengan primary key yang sama !");
         return $result;
      }
 
-     function hapusinput($sql){
-        bukakoneksi();
-        $result=mysqli_query(bukakoneksi(),$sql)
-        or die("<font color=red><b>Gagal</b>, Data masih dipakai di tabel lain !");
-        mysqli_close(bukakoneksi());
+     function hapusinput($sql)
+	 {
+       bukakoneksi();
+       $result=mysql_query($sql)
+        or die(mysql_error()."<br/><font color=red><b>Gagal</b>, Data masih dipakai di tabel lain !");
         return $result;
      }
 
-     function Tambah($tabelname,$attrib,$pesan) {
-        $command = bukainput("INSERT INTO ".$tabelname." VALUES (".$attrib.")");
-        echo  "<img src='images/simpan.gif' />&nbsp;&nbsp; Data $pesan berhasil disimpan";
-        return $command;
-     }
-     
-     function Tambah2($tabelname,$attrib,$pesan) {
+	function Tambah($tabelname,$attrib,$pesan) {
 
              $command = bukainput("INSERT INTO ".$tabelname." VALUES (".$attrib.")");
-        echo  "<img src='images/simpan.gif' />&nbsp;&nbsp; <font size='9'>Data $pesan berhasil disimpan</font>";
-        return $command;
-     }
-     
-     function Tambah3($tabelname,$attrib) {
-        $command = bukainput("INSERT INTO ".$tabelname." VALUES (".$attrib.")");
+        echo  "<img src='images/simpan.gif' />&nbsp;&nbsp; Data $pesan berhasil disimpan";
         return $command;
      }
 
      function InsertData($tabelname,$attrib) {
+
              $command = bukaquery("INSERT INTO ".$tabelname." VALUES (".$attrib.")");
-        return $command;
-     }
-     
-     function InsertData2($tabelname,$attrib) {
-             $command = bukaquery2("INSERT INTO ".$tabelname." VALUES (".$attrib.")");
         return $command;
      }
      
@@ -224,22 +202,11 @@
         echo  "<img src='images/simpan.gif' />&nbsp;&nbsp; Data $pesan berhasil diubah";
         return $command;
      }
-     
-     function Ubah2($tabelname,$attrib) {
-             $command = bukaquery("UPDATE ".$tabelname." SET ".$attrib." ");
-        return $command;
-     }
 
      function Hapus($tabelname,$param,$hal) {
         $sql ="DELETE FROM ".$tabelname." WHERE ".$param." ";
-        $command = hapusinput($sql);
-        Zet($hal);
-        return $command;
-     }
-     
-     function Hapus2($tabelname,$param) {
-        $sql ="DELETE FROM ".$tabelname." WHERE ".$param." ";
              $command = hapusinput($sql);
+        Zet($hal);
         return $command;
      }
 
@@ -252,7 +219,7 @@
      function deletegb($sql){
           $_sql         = $sql;
           $hasil        = bukaquery($_sql);
-          $baris        = mysqli_fetch_row($hasil);
+          $baris        = mysql_fetch_row($hasil);
           $gb           = $baris[0];
           $hapus=unlink($gb);
      }
@@ -314,9 +281,10 @@
 		return "Rp. ".number_format($duit,0,",",".").",-";
 	}
         
-    function formatDuit2($duit){
-		return @number_format($duit,0,",",".")."";
-    }
+    function formatDuit2($duit)
+	{
+		return number_format($duit,0,",",".")."";
+	}
         
     function formatDec($duit)
 	{
@@ -329,17 +297,17 @@
 	}
 
     function JumlahBaris($result) {
-  		return mysqli_num_rows($result);
+  		return mysql_num_rows($result);
 	}
 
-     function getOne($sql) {
-        $hasil=bukaquery($sql);
-        list($result) =mysqli_fetch_array($hasil);
-        return $result;
+	 function getOne($sql) {
+     $hasil=bukaquery($sql);
+     list($result) =mysql_fetch_array($hasil);
+     return $result;
      }
 
-        function cekKosong($sql) {
-		$jum = mysqli_num_rows($sql);
+     function cekKosong($sql) {
+		$jum = mysql_num_rows($sql);
 		if ($jum==0) return true;
 		else return false;
 	}
@@ -357,7 +325,7 @@
 	}
         
         function loadTglnow(){
-                $tglsekarang=date('d');
+                $tglsekarang=date('d');;
 		echo "<option>".$tglsekarang."</option>";
 		for($tgl=1; $tgl<=31; $tgl++){
 			$tgl_leng=strlen($tgl);
@@ -510,7 +478,7 @@
         
         function autonomer($table,$strawal,$pnj){
             $hasil        = bukaquery($table);
-            $s            = mysqli_num_rows($hasil)+1;
+            $s            = mysql_num_rows($hasil)+1;
             $j            = strlen($s);         
             $s1           = "";
             for($i=1;$i<=$pnj-$j;$i++){

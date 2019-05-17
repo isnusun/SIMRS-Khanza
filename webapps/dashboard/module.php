@@ -1,5 +1,5 @@
 <?php 
-error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+	error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	if($_GET['module']=="1.1"){
 		include "rl_1.1.php";
 		} 
@@ -81,8 +81,5 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 		<h4>Selamat Datang di menu Laporan</h4></div>
 			<div class="panel-body">
 			<p>data ni akan di kirimkan ke dashboard dinkes setiap periodenyaaa
-		<?
+		<?php
 	}
-?>
-
-		

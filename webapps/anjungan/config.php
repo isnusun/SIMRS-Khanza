@@ -15,12 +15,12 @@ if (preg_match ('/config.php/', basename($_SERVER['PHP_SELF']))) die ('Unable to
 
 define('VERSION', '0.1 Beta');
 define('ABSPATH', dirname(__FILE__) . '/');
-define('URL', 'http://localhost/webapps/anjungan');
+define('URL', 'http://local.khanza.arcapada.work/webapps/anjungan');
 define('DIR', '');
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'sik');
+define('DB_USER', 'simrs_khanza');
+define('DB_PASS', '2S8rbRpuMnG9o84w');
+define('DB_NAME', 'simrs_khanza');
 define('HARIDAFTAR', '7'); // Batasi hari pendaftaran 30 hari kedepan
 define('LIMITJAM', '23:59:00'); // Batasi jam pendaftaran
 define('SIGNUP', 'DISABLE'); // ENABLE atau DISABLE pendaftaran pasien baru
